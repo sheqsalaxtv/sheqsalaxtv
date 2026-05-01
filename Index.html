@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="so" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sheqsalax TV – Casharo Diini Ah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green-dark:  #1a4a2e;
+      --green-mid:   #2d7a4f;
+      --green-light: #4caf75;
+      --green-pale:  #e8f5ee;
+      --gold:        #c8a84b;
+      --gold-light:  #f0d080;
+      --white:       #ffffff;
+      --text-dark:   #0f2d1c;
+      --text-mid:    #2d5a3d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(26,74,46,0.96);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .nav-logo {
+      font-family: 'Amiri', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-links a {
+      color: #d4edd9;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 400;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(160deg, rgba(26,74,46,0.92) 0%, rgba(45,122,79,0.85) 60%, rgba(76,175,117,0.7) 100%),
+        url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=1400&q=80') center/cover no-repeat;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative arabic pattern overlay */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 20% 80%, rgba(200,168,75,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(200,168,75,0.10) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-inner { max-width: 750px; position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(200,168,75,0.2);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: .4rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+      animation: fadeDown .8s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Amiri', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      animation: fadeDown .9s .1s ease both;
+    }
+    .hero h1 span { color: var(--gold); }
+
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 1.5rem;
+      animation: fadeDown 1s .2s ease both;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      animation: fadeDown 1s .3s ease both;
+    }
+
+    .hero-btns {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeDown 1s .4s ease both;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--text-dark);
+      padding: .85rem 2.2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(200,168,75,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,168,75,0.5); }
+    .btn-outline {
+      border: 2px solid rgba(255,255,255,0.6);
+      color: var(--white);
+      padding: .85rem 2.2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background .2s, border-color .2s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: white; }
+
+    /* scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      color: rgba(255,255,255,0.5); font-size: .75rem;
+      animation: bounce 2s infinite;
+    }
+    .scroll-hint::after {
+      content: '↓'; font-size: 1.2rem; color: var(--gold);
+    }
+
+    /* ── STATS STRIP ── */
+    .stats {
+      background: var(--green-dark);
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 0;
+    }
+    .stat-item {
+      flex: 1; min-width: 160px;
+      padding: 1.8rem 1rem;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.2rem; font-weight: 900;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label { font-size: .85rem; color: rgba(255,255,255,0.65); margin-top: .3rem; }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 5rem 2rem; }
+    .section-label {
+      display: inline-block;
+      color: var(--green-mid);
+      font-size: .8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-family: 'Amiri', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--green-dark);
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+    .section-sub {
+      color: var(--text-mid);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 600px;
+    }
+    .center { text-align: center; }
+    .center .section-sub { margin: 0 auto; }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .about-img-wrap {
+      position: relative;
+    }
+    .about-img-wrap::before {
+      content: '';
+      position: absolute; top: -16px; left: -16px;
+      width: 100%; height: 100%;
+      border: 3px solid var(--gold);
+      border-radius: 16px;
+      z-index: 0;
+    }
+    .about-img-wrap img {
+      width: 100%; border-radius: 12px;
+      position: relative; z-index: 1;
+      display: block;
+      filter: brightness(.95) saturate(1.05);
+    }
+    .about-features { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2rem; }
+    .feat-row {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--green-pale); border-radius: 12px; padding: 1rem 1.2rem;
+      border-left: 4px solid var(--green-mid);
+    }
+    .feat-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .feat-text h4 { font-size: 1rem; font-weight: 700; color: var(--green-dark); }
+    .feat-text p  { font-size: .88rem; color: var(--text-mid); margin-top: .2rem; line-height: 1.5; }
+
+    /* ── COURSES ── */
+    .courses-bg { background: var(--green-pale); }
+    .courses-grid {
+      max-width: 1100px; margin: 3rem auto 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.8rem;
+    }
+    .course-card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(26,74,46,0.08);
+      transition: transform .3s, box-shadow .3s;
+      position: relative;
+    }
+    .course-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(26,74,46,0.16); }
+    .course-thumb {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+    }
+    .thumb-1 { background: linear-gradient(135deg, #1a4a2e, #2d7a4f); }
+    .thumb-2 { background: linear-gradient(135deg, #2d4a1a, #6a8a2a); }
+    .thumb-3 { background: linear-gradient(135deg, #4a2d1a, #8a5a2a); }
+    .thumb-4 { background: linear-gradient(135deg, #1a2d4a, #2a5a8a); }
+    .thumb-5 { background: linear-gradient(135deg, #3a1a4a, #7a2a8a); }
+    .thumb-6 { background: linear-gradient(135deg, #1a4a3a, #2a8a7a); }
+    .course-body { padding: 1.4rem; }
+    .course-tag {
+      background: var(--green-pale);
+      color: var(--green-mid);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: .2rem .7rem;
+      border-radius: 50px;
+      display: inline-block;
+      margin-bottom: .7rem;
+    }
+    .course-body h3 {
+      font-family: 'Amiri', serif;
+      font-size: 1.25rem;
+      color: var(--green-dark);
+      margin-bottom: .5rem;
+    }
+    .course-body p { font-size: .88rem; color: var(--text-mid); line-height: 1.6; }
+    .course-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .8rem 1.4rem;
+      border-top: 1px solid #eef5f1;
+      font-size: .82rem;
+      color: var(--text-mid);
+    }
+    .course-footer a {
+      color: var(--green-mid);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .course-footer a:hover { color: var(--gold); }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+    .contact-info-list { display: flex; flex-direction: column; gap: 1.4rem; margin-top: 2rem; }
+    .contact-row {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .contact-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--green-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .contact-detail h4 { font-size: .82rem; color: var(--text-mid); text-transform: uppercase; letter-spacing: 1px; }
+    .contact-detail p  { font-size: 1rem; color: var(--text-dark); font-weight: 600; margin-top: .15rem; }
+    .contact-detail a  { color: var(--green-mid); text-decoration: none; }
+    .contact-detail a:hover { color: var(--gold); }
+
+    .contact-form { background: var(--green-pale); padding: 2.5rem; border-radius: 20px; }
+    .contact-form h3 {
+      font-family: 'Amiri', serif;
+      font-size: 1.5rem; color: var(--green-dark); margin-bottom: 1.5rem;
+    }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: .85rem; font-weight: 700; color: var(--text-mid); margin-bottom: .4rem; }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--white);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: .75rem 1rem;
+      font-family: 'Tajawal', sans-serif;
+      font-size: .95rem;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--green-mid); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .btn-submit {
+      width: 100%;
+      background: var(--green-dark);
+      color: var(--white);
+      border: none;
+      padding: .9rem;
+      border-radius: 10px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .btn-submit:hover { background: var(--green-mid); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green-dark);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 2.5rem 2rem;
+    }
+    footer .footer-logo {
+      font-family: 'Amiri', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-bottom: .5rem;
+    }
+    footer p { font-size: .88rem; line-height: 1.7; }
+    footer a { color: var(--gold-light); text-decoration: none; }
+    .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 1.5rem auto; max-width: 300px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: .9rem 1.2rem; }
+      .nav-links { display: none; }
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-img-wrap { max-width: 420px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">☪ Sheqsalax TV</div>
+  <ul class="nav-links">
+    <li><a href="#about">Ku Saabsan</a></li>
+    <li><a href="#courses">Casharo</a></li>
+    <li><a href="#contact">Xiriir</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">✦ Xarunta Waxbarashada Islaamiga ✦</div>
+    <h1>Sheqsalax <span>TV</span></h1>
+    <p class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+    <p>Ku soo dhawow xaruntaada casharo diini ah. Waxaan kuu bixinaynaa waxbarasho tayo sare leh oo ku salaysan Qur'aanka Kariimka iyo Sunnada Nabiga ﷺ.</p>
+    <div class="hero-btns">
+      <a href="#courses" class="btn-primary">📚 Billow Casharrada</a>
+      <a href="#contact" class="btn-outline">📞 Nala Soo Xiriir</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Hoos u sii</div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item"><span class="stat-num">500+</span><span class="stat-label">Arday</span></div>
+  <div class="stat-item"><span class="stat-num">20+</span><span class="stat-label">Casharo</span></div>
+  <div class="stat-item"><span class="stat-num">10+</span><span class="stat-label">Macalin</span></div>
+  <div class="stat-item"><span class="stat-num">5★</span><span class="stat-label">Tayada</span></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=600&q=80" alt="Quran study" />
+    </div>
+    <div>
+      <span class="section-label">Ku Saabsan</span>
+      <h2 class="section-title">Maxay Tahay Sheqsalax TV?</h2>
+      <p class="section-sub">Sheqsalax TV waa xarun waxbarasho oo ku salaysan casharo diini ah oo loogu talagalay dadka Soomaaliyeed. Waxaan ka hawlgalnaa Somalia oo waxaan ku dadaalnaynaa inaan uga caawinno umadda inay diintooda si fiican u barato.</p>
+      <div class="about-features">
+        <div class="feat-row">
+          <div class="feat-icon">📖</div>
+          <div class="feat-text">
+            <h4>Qur'aan Kariim</h4>
+            <p>Waxbarasho taxaddar leh oo loogu talagalay xifdhiga iyo akhriska Qur'aanka Kariimka.</p>
+          </div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-icon">🕌</div>
+          <div class="feat-text">
+            <h4>Fiqiga Islaamiga</h4>
+            <p>Casharo faahfaahsan oo ku saabsan sharciga Islaamiga iyo xeerarka diinta.</p>
+          </div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-icon">🌟</div>
+          <div class="feat-text">
+            <h4>Macalinno Tayo Leh</h4>
+            <p>Macalinno khibrad u leh oo ku waxbaray xarumaaha Islaamiga ee caalamiga ah.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses" class="courses-bg">
+  <div class="center">
+    <span class="section-label">Casharradeena</span>
+    <h2 class="section-title">Casharo Diini Ah</h2>
+    <p class="section-sub">Dooro casharka aad rabto inaad barato. Waxaan leeyahay heeraro kala duwan oo ku habboon heer kasta.</p>
+  </div>
+  <div class="courses-grid">
+
+    <div class="course-card">
+      <div class="course-thumb thumb-1">📖</div>
+      <div class="course-body">
+        <span class="course-tag">Asaasiga</span>
+        <h3>Akhriska Qur'aanka</h3>
+        <p>Bilow barashadaada Qur'aanka Kariimka si sax ah oo taxaddar leh.</p>
+      </div>
+      <div class="course-footer"><span>🕐 Bilaa lacag</span><a href="#contact">Diiwaaangeli →</a></div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-thumb thumb-2">🤲</div>
+      <div class="course-body">
+        <span class="course-tag">Ibaado</span>
+        <h3>Salaada iyo Wuxuudkeeda</h3>
+        <p>Barasho salaada iyo xeerarka la xiriira si faahfaahsan.</p>
+      </div>
+      <div class="course-footer"><span>🕐 4 Todobaad</span><a href="#contact">Diiwaaangeli →</a></div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-thumb thumb-3">📿</div>
+      <div class="course-body">
+        <span class="course-tag">Xifidh</span>
+        <h3>Xifdhiga Qur'aanka</h3>
+        <p>Xifid Qur'aanka Kariimka oo dhan oo ku jiid macalinno khibrad leh.</p>
+      </div>
+      <div class="course-footer"><span>🕐 1 Sano</span><a href="#contact">Diiwaaangeli →</a></div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-thumb thumb-4">⚖️</div>
+      <div class="course-body">
+        <span class="course-tag">Fiqih</span>
+        <h3>Fiqiga Islaamiga</h3>
+        <p>Xeerarka iyo sharciga Islaamiga ee ku saabsan noloshada maalintii.</p>
+      </div>
+      <div class="course-footer"><span>🕐 8 Todobaad</span><a href="#contact">Diiwaaangeli →</a></div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-thumb thumb-5">🌙</div>
+      <div class="course-body">
+        <span class="course-tag">Aqoon</span>
+        <h3>Taariikhda Islaamiga</h3>
+        <p>Taariikhda Nabiga ﷺ iyo saaxiibadiisa waxbarashada ku salaysan.</p>
+      </div>
+      <div class="course-footer"><span>🕐 6 Todobaad</span><a href="#contact">Diiwaaangeli →</a></div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-thumb thumb-6">🗣️</div>
+      <div class="course-body">
+        <span class="course-tag">Af-Carabi</span>
+        <h3>Af Carabi Asaasiga</h3>
+        <p>Barasho Af Carabiga si aad Qur'aanka u fahamtid si toos ah.</p>
+      </div>
+      <div class="course-footer"><span>🕐 3 Bilood</span><a href="#contact">Diiwaaangeli →</a></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div>
+      <span class="section-label">Xiriir</span>
+      <h2 class="section-title">Nala Soo Xiriir</h2>
+      <p class="section-sub">Su'aal ma qabtaa? Waxaan kugu faraxsanahay inaan kaa caawino. Nala soo xiriir habka ku habboon.</p>
+      <div class="contact-info-list">
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div class="contact-detail">
+            <h4>Cinwaanka</h4>
+            <p>Somalia</p>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📞</div>
+          <div class="contact-detail">
+            <h4>Telefoonka</h4>
+            <p><a href="tel:+252687095880">+252 68 7095880</a></p>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-detail">
+            <h4>Email</h4>
+            <p><a href="mailto:abdirina58@gmail.com">abdirina58@gmail.com</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <h3>Noo Dir Farriin</h3>
+      <div class="form-group">
+        <label>Magacaaga</label>
+        <input type="text" placeholder="Magacaaga geli..." />
+      </div>
+      <div class="form-group">
+        <label>Telefoonka</label>
+        <input type="tel" placeholder="+252 ..." />
+      </div>
+      <div class="form-group">
+        <label>Farriintaada</label>
+        <textarea placeholder="Su'aashaada ama farriintaada..."></textarea>
+      </div>
+      <button class="btn-submit">📨 Dir Farriinta</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">☪ Sheqsalax TV</div>
+  <p>Casharo Diini Ah • Somalia</p>
+  <hr class="footer-divider" />
+  <p>
+    📞 <a href="tel:+252687095880">+252 68 7095880</a> &nbsp;|&nbsp;
+    ✉️ <a href="mailto:abdirina58@gmail.com">abdirina58@gmail.com</a>
+  </p>
+  <p style="margin-top:.8rem; font-size:.8rem; opacity:.5;">© 2024 Sheqsalax TV – Xuquuqda way xidantahay</p>
+</footer>
+
+</body>
+</html>

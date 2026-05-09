@@ -379,10 +379,52 @@
       50%       { transform: translateX(-50%) translateY(6px); }
     }
 
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: .4rem;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px; height: 3px;
+      background: var(--gold);
+      border-radius: 3px;
+      transition: all .3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(26,74,46,0.98);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--gold-light);
+      text-decoration: none;
+      font-size: 1.6rem;
+      font-family: 'Amiri', serif;
+      transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav { padding: .9rem 1.2rem; }
       .nav-links { display: none; }
+      .hamburger { display: flex; }
       .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       .about-img-wrap { max-width: 420px; }
     }
@@ -398,7 +440,18 @@
     <li><a href="#courses">Casharo</a></li>
     <li><a href="#contact">Xiriir</a></li>
   </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">📖 Ku Saabsan</a>
+  <a href="#courses" onclick="toggleMenu()">📚 Casharo</a>
+  <a href="#contact" onclick="toggleMenu()">📞 Xiriir</a>
+  <a href="https://www.tiktok.com/@sheqsalaxtv" target="_blank">🎵 TikTok</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -568,17 +621,18 @@
       <h3>Noo Dir Farriin</h3>
       <div class="form-group">
         <label>Magacaaga</label>
-        <input type="text" placeholder="Magacaaga geli..." />
+        <input type="text" id="from_name" placeholder="Magacaaga geli..." />
       </div>
       <div class="form-group">
         <label>Telefoonka</label>
-        <input type="tel" placeholder="+252 ..." />
+        <input type="tel" id="phone" placeholder="+252 ..." />
       </div>
       <div class="form-group">
         <label>Farriintaada</label>
-        <textarea placeholder="Su'aashaada ama farriintaada..."></textarea>
+        <textarea id="message" placeholder="Su'aashaada ama farriintaada..."></textarea>
       </div>
-      <button class="btn-submit">📨 Dir Farriinta</button>
+      <button class="btn-submit" id="send-btn" onclick="dirFarriinta()">📨 Dir Farriinta</button>
+      <p id="msg-status" style="margin-top:1rem;font-weight:700;text-align:center;display:none;"></p>
     </div>
   </div>
 </section>
@@ -592,8 +646,74 @@
     📞 <a href="tel:+252687095880">+252 68 7095880</a> &nbsp;|&nbsp;
     ✉️ <a href="mailto:abdirina58@gmail.com">abdirina58@gmail.com</a>
   </p>
-  <p style="margin-top:.8rem; font-size:.8rem; opacity:.5;">© 2024 Sheqsalax TV – Xuquuqda way xidantahay</p>
+  <!-- TikTok Button -->
+  <div style="margin-top:1.5rem;">
+    <a href="https://www.tiktok.com/@sheqsalaxtv" target="_blank"
+       style="display:inline-flex; align-items:center; gap:.6rem;
+              background:#010101; color:#fff;
+              padding:.75rem 1.8rem; border-radius:50px;
+              text-decoration:none; font-weight:700; font-size:1rem;
+              box-shadow:0 4px 20px rgba(0,0,0,0.4);
+              transition:transform .2s, box-shadow .2s;"
+       onmouseover="this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.transform='translateY(0)'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/>
+      </svg>
+      Nala Soo Biir TikTok
+    </a>
+  </div>
+  <p style="margin-top:1rem; font-size:.8rem; opacity:.5;">© 2024 Sheqsalax TV – Xuquuqda way xidantahay</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  emailjs.init("E_HQnetP8QHRVi30a");
+
+  function dirFarriinta() {
+    var name    = document.getElementById('from_name').value.trim();
+    var phone   = document.getElementById('phone').value.trim();
+    var message = document.getElementById('message').value.trim();
+    var status  = document.getElementById('msg-status');
+    var btn     = document.getElementById('send-btn');
+
+    if (!name || !message) {
+      status.style.display = 'block';
+      status.style.color   = '#c0392b';
+      status.textContent   = '⚠️ Fadlan magacaaga iyo farriintaada geli!';
+      return;
+    }
+
+    btn.disabled     = true;
+    btn.textContent  = '⏳ Waa la diraya...';
+    status.style.display = 'none';
+
+    emailjs.send("service_29axcvw", "template_vz7k84y", {
+      from_name: name,
+      phone:     phone || 'Lama gelin',
+      message:   message
+    }).then(function() {
+      status.style.display = 'block';
+      status.style.color   = '#1a4a2e';
+      status.textContent   = '✅ Farriintaada waa la diray! Mahadsanid.';
+      btn.textContent      = '📨 Dir Farriinta';
+      btn.disabled         = false;
+      document.getElementById('from_name').value = '';
+      document.getElementById('phone').value     = '';
+      document.getElementById('message').value   = '';
+    }, function(error) {
+      status.style.display = 'block';
+      status.style.color   = '#c0392b';
+      status.textContent   = '❌ Khalad ayaa dhacay. Isku day mar kale.';
+      btn.textContent      = '📨 Dir Farriinta';
+      btn.disabled         = false;
+    });
+  }
+</script>
 </body>
 </html>

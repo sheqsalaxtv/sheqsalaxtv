@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="so" dir="ltr">
 <head>
@@ -16,7 +17,85 @@
       --white:       #ffffff;
       --text-dark:   #0f2d1c;
       --text-mid:    #2d5a3d;
+      --bg:          #ffffff;
+      --card-bg:     #ffffff;
     }
+
+    /* DARK MODE */
+    body.dark {
+      --bg:         #0d1f15;
+      --card-bg:    #1a2e1f;
+      --green-pale: #1a2e1f;
+      --white:      #e8f5ee;
+      --text-dark:  #d4edd9;
+      --text-mid:   #9abfa5;
+    }
+    body.dark { background: var(--bg); color: var(--text-dark); }
+    body.dark nav { background: rgba(10,30,18,0.97); }
+    body.dark .course-card { background: var(--card-bg); border: 1px solid #2d4a35; }
+    body.dark .contact-form { background: var(--card-bg); }
+    body.dark .form-group input,
+    body.dark .form-group textarea { background: #0d1f15; color: var(--text-dark); border-color: #2d4a35; }
+    body.dark footer { background: #080f0b; }
+    body.dark .feat-row { background: var(--card-bg); }
+    body.dark .courses-bg { background: #122018; }
+    body.dark .section-title { color: var(--gold-light); }
+
+    /* DARK TOGGLE */
+    .dark-toggle {
+      background: none; border: 2px solid var(--gold);
+      color: var(--gold); border-radius: 50px;
+      padding: .3rem .8rem; cursor: pointer;
+      font-size: .85rem; font-family: 'Tajawal', sans-serif;
+      transition: all .3s;
+    }
+    .dark-toggle:hover { background: var(--gold); color: #000; }
+
+    /* SEARCH */
+    .search-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+      align-items: flex-start; justify-content: center; padding-top: 8rem;
+    }
+    .search-overlay.open { display: flex; }
+    .search-box {
+      background: #fff; border-radius: 16px; padding: 1.5rem;
+      width: 90%; max-width: 550px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    body.dark .search-box { background: #1a2e1f; }
+    .search-input-wrap { display: flex; gap: .8rem; align-items: center; }
+    .search-input-wrap input {
+      flex: 1; border: 2px solid var(--green-mid); border-radius: 10px;
+      padding: .75rem 1rem; font-size: 1rem; font-family: 'Tajawal', sans-serif;
+      outline: none; color: #0f2d1c;
+    }
+    .search-close {
+      background: #e74c3c; color: #fff; border: none;
+      border-radius: 8px; padding: .6rem .9rem; cursor: pointer; font-size: 1rem;
+    }
+    .search-result-item {
+      padding: .7rem 1rem; border-radius: 8px; cursor: pointer;
+      transition: background .2s; border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    body.dark .search-result-item { border-color: rgba(255,255,255,0.07); color: #d4edd9; }
+    .search-result-item:hover { background: var(--green-pale); }
+    .search-result-item h4 { font-size: .95rem; color: var(--green-dark); }
+    body.dark .search-result-item h4 { color: var(--gold); }
+    .search-result-item p  { font-size: .8rem; color: var(--text-mid); margin-top: .2rem; }
+    .no-results { text-align:center; color: var(--text-mid); padding: 1rem; }
+
+    /* FADE IN ANIMATION */
+    .fade-in {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* IMAGE ZOOM */
+    .about-img-wrap img { transition: transform .4s ease; }
+    .about-img-wrap:hover img { transform: scale(1.04); }
+    .course-thumb { transition: transform .3s ease; }
+    .course-card:hover .course-thumb { transform: scale(1.08); }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -440,10 +519,25 @@
     <li><a href="#courses">Casharo</a></li>
     <li><a href="#contact">Xiriir</a></li>
   </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙 Dark</button>
+    <button class="dark-toggle" onclick="openSearch()" style="border-color:rgba(255,255,255,0.5);color:#fff;">🔍</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </nav>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <input type="text" id="searchInput" placeholder="🔍 Raadi casharo, macluumaad..." oninput="doSearch()" />
+      <button class="search-close" onclick="closeSearch()">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
@@ -459,7 +553,7 @@
     <div class="hero-badge">✦ Xarunta Waxbarashada Islaamiga ✦</div>
     <h1>Sheqsalax <span>TV</span></h1>
     <p class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-    <p>Ku soo dhawow xarunteena casharo diini ah. Waxaan bixinaynaa waxbarasho tayo sare leh oo ku salaysan Qur'aanka Kariimka iyo Sunnada Nabiga ﷺ.</p>
+    <p>Ku soo dhawow xaruntaada casharo diini ah. Waxaan kuu bixinaynaa waxbarasho tayo sare leh oo ku salaysan Qur'aanka Kariimka iyo Sunnada Nabiga ﷺ.</p>
     <div class="hero-btns">
       <a href="#courses" class="btn-primary">📚 Billow Casharrada</a>
       <a href="#contact" class="btn-outline">📞 Nala Soo Xiriir</a>
@@ -477,7 +571,7 @@
 </div>
 
 <!-- ABOUT -->
-<section id="about">
+<section id="about" class="fade-in">
   <div class="about-grid">
     <div class="about-img-wrap">
       <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=600&q=80" alt="Quran study" />
@@ -485,7 +579,7 @@
     <div>
       <span class="section-label">Ku Saabsan</span>
       <h2 class="section-title">Maxay Tahay Sheqsalax TV?</h2>
-      <p class="section-sub">Sheqsalax TV waa xarun waxbarasho oo ku salaysan casharo diini ah oo loogu talagalay dadka Soomaaliyeed. Waxaan ka hawlgalnaa Somalia waxaan ku dadaalnaynaa inaan caawinno umadda si ay diintooda si fiican u bartaan.</p>
+      <p class="section-sub">Sheqsalax TV waa xarun waxbarasho oo ku salaysan casharo diini ah oo loogu talagalay dadka Soomaaliyeed. Waxaan ka hawlgalnaa Somalia oo waxaan ku dadaalnaynaa inaan uga caawinno umadda inay diintooda si fiican u barato.</p>
       <div class="about-features">
         <div class="feat-row">
           <div class="feat-icon">📖</div>
@@ -522,7 +616,7 @@
   </div>
   <div class="courses-grid">
 
-    <div class="course-card">
+    <div class="course-card fade-in">
       <div class="course-thumb thumb-1">📖</div>
       <div class="course-body">
         <span class="course-tag">Asaasiga</span>
@@ -532,7 +626,7 @@
       <div class="course-footer"><span>🕐 Bilaa lacag</span><a href="#contact">Diiwaaangeli →</a></div>
     </div>
 
-    <div class="course-card">
+    <div class="course-card fade-in">
       <div class="course-thumb thumb-2">🤲</div>
       <div class="course-body">
         <span class="course-tag">Ibaado</span>
@@ -542,7 +636,7 @@
       <div class="course-footer"><span>🕐 4 Todobaad</span><a href="#contact">Diiwaaangeli →</a></div>
     </div>
 
-    <div class="course-card">
+    <div class="course-card fade-in">
       <div class="course-thumb thumb-3">📿</div>
       <div class="course-body">
         <span class="course-tag">Xifidh</span>
@@ -552,7 +646,7 @@
       <div class="course-footer"><span>🕐 1 Sano</span><a href="#contact">Diiwaaangeli →</a></div>
     </div>
 
-    <div class="course-card">
+    <div class="course-card fade-in">
       <div class="course-thumb thumb-4">⚖️</div>
       <div class="course-body">
         <span class="course-tag">Fiqih</span>
@@ -562,7 +656,7 @@
       <div class="course-footer"><span>🕐 8 Todobaad</span><a href="#contact">Diiwaaangeli →</a></div>
     </div>
 
-    <div class="course-card">
+    <div class="course-card fade-in">
       <div class="course-thumb thumb-5">🌙</div>
       <div class="course-body">
         <span class="course-tag">Aqoon</span>
@@ -572,7 +666,7 @@
       <div class="course-footer"><span>🕐 6 Todobaad</span><a href="#contact">Diiwaaangeli →</a></div>
     </div>
 
-    <div class="course-card">
+    <div class="course-card fade-in">
       <div class="course-thumb thumb-6">🗣️</div>
       <div class="course-body">
         <span class="course-tag">Af-Carabi</span>
@@ -586,12 +680,12 @@
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
+<section id="contact" class="fade-in">
   <div class="contact-inner">
     <div>
       <span class="section-label">Xiriir</span>
       <h2 class="section-title">Nala Soo Xiriir</h2>
-      <p class="section-sub">Su'aal ma qabtaa? Waxaan ku faraxsanahay inaan ku caawino. Nala soo xiriir habka ku habboon.</p>
+      <p class="section-sub">Su'aal ma qabtaa? Waxaan kugu faraxsanahay inaan kaa caawino. Nala soo xiriir habka ku habboon.</p>
       <div class="contact-info-list">
         <div class="contact-row">
           <div class="contact-icon">📍</div>
@@ -667,6 +761,74 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  // DARK MODE
+  function toggleDark() {
+    document.body.classList.toggle('dark');
+    var btn = document.getElementById('darkBtn');
+    btn.textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+    localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+  }
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark');
+    document.addEventListener('DOMContentLoaded', function() {
+      var btn = document.getElementById('darkBtn');
+      if(btn) btn.textContent = '☀️ Light';
+    });
+  }
+
+  // SEARCH
+  var searchData = [
+    { title: 'Akhriska Qur\'aanka', desc: 'Bilow barashadaada Qur\'aanka Kariimka si sax ah', link: '#courses' },
+    { title: 'Salaada iyo Wuxuudkeeda', desc: 'Barasho salaada iyo xeerarka la xiriira', link: '#courses' },
+    { title: 'Xifdhiga Qur\'aanka', desc: 'Xifid Qur\'aanka Kariimka oo dhan', link: '#courses' },
+    { title: 'Fiqiga Islaamiga', desc: 'Xeerarka iyo sharciga Islaamiga', link: '#courses' },
+    { title: 'Taariikhda Islaamiga', desc: 'Taariikhda Nabiga ﷺ iyo saaxiibadiisa', link: '#courses' },
+    { title: 'Af Carabi Asaasiga', desc: 'Barasho Af Carabiga si aad Qur\'aanka u fahamtid', link: '#courses' },
+    { title: 'Nala Soo Xiriir', desc: 'Telefoon: +252 68 7095880', link: '#contact' },
+    { title: 'Ku Saabsan Sheqsalax TV', desc: 'Xarunta waxbarashada Islaamiga ee Somalia', link: '#about' },
+  ];
+
+  function openSearch() {
+    document.getElementById('searchOverlay').classList.add('open');
+    document.getElementById('searchInput').focus();
+    document.getElementById('searchResults').innerHTML = '';
+  }
+  function closeSearch() {
+    document.getElementById('searchOverlay').classList.remove('open');
+    document.getElementById('searchInput').value = '';
+  }
+  function doSearch() {
+    var q = document.getElementById('searchInput').value.toLowerCase();
+    var res = document.getElementById('searchResults');
+    if (!q) { res.innerHTML = ''; return; }
+    var matches = searchData.filter(function(i) {
+      return i.title.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q);
+    });
+    if (!matches.length) {
+      res.innerHTML = '<p class="no-results">Wax lama helin 😔</p>'; return;
+    }
+    res.innerHTML = matches.map(function(i) {
+      return '<div class="search-result-item" onclick="goTo(\'' + i.link + '\')"><h4>' + i.title + '</h4><p>' + i.desc + '</p></div>';
+    }).join('');
+  }
+  function goTo(link) {
+    closeSearch();
+    document.querySelector(link).scrollIntoView({ behavior: 'smooth' });
+  }
+  document.getElementById('searchOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeSearch();
+  });
+
+  // FADE IN ON SCROLL
+  var fadeEls = document.querySelectorAll('.fade-in');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(function(el) { observer.observe(el); });
+</script>
 <script>
   function toggleMenu() {
     document.getElementById('hamburger').classList.toggle('open');

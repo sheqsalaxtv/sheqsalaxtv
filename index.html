@@ -1005,3 +1005,50 @@
 </div>
 </body>
 </html>
+<!-- OLD LAMP -->
+<div class="lamp-container">
+  <img src="https://i.imgur.com/8Km9tLL.png" class="lamp">
+  <div class="lamp-light"></div>
+</div>
+
+<style>
+.lamp-container{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+}
+
+.lamp{
+  width: 120px;
+  position: relative;
+  z-index: 2;
+}
+
+.lamp-light{
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle,
+  rgba(255,180,60,0.7) 0%,
+  rgba(255,140,0,0.25) 40%,
+  transparent 70%);
+  border-radius: 50%;
+  filter: blur(25px);
+  animation: flicker 2s infinite alternate;
+}
+
+@keyframes flicker{
+  from{
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  to{
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+</style>
